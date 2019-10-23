@@ -1,43 +1,66 @@
-# Jetbrains IDE
-target/
+### IntelliJ ###
+out/
+.idea_modules/
 .idea/
+*.iml
+*.ipr
+*.iws
 
-# MacOS
-.DS_Store
-.AppleDouble
-.LSOverride
+### Linux ###
+*~
+.directory
+.fuse_hidden*
+.nfs*
+.Trash-*
+
+### macOS ###
 Icon
+Network Trash Folder
+Temporary Items
 ._*
+.apdisk
+.AppleDB
+.AppleDesktop
+.AppleDouble
+.com.apple.timemachine.donotpresent
 .DocumentRevisions-V100
+.DS_Store
 .fseventsd
+.LSOverride
 .Spotlight-V100
 .TemporaryItems
 .Trashes
 .VolumeIcon.icns
-.com.apple.timemachine.donotpresent
-.AppleDB
-.AppleDesktop
-Network Trash Folder
-Temporary Items
-.apdisk
 
-# Windows
-Thumbs.db
+### SBT ###
+dist/*
+target/
+lib_managed/
+src_managed/
+project/boot/
+project/plugins/project/
+.history
+.cache
+.lib/
+
+### Scala ###
+*.class
+*.log
+
+### VisualStudioCode ###
+.vscode/
+
+### Windows ###
+$RECYCLE.BIN/
+[Dd]esktop.ini
 ehthumbs.db
 ehthumbs_vista.db
-*.stackdump
-[Dd]esktop.ini
-$RECYCLE.BIN/
+Thumbs.db
+Thumbs.db:encryptable
 *.cab
+*.lnk
 *.msi
+*.msix
 *.msm
 *.msp
-*.lnk
-
-# Spark
-spark-warehouse/
-
-# Eclipse
-.classpath
-.project
-.settings/
+*.stackdump
