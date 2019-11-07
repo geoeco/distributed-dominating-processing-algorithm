@@ -1,10 +1,10 @@
 ### JetBrains ###
-out/
-.idea_modules/
-.idea/
 *.iml
 *.ipr
 *.iws
+.idea/
+.idea_modules/
+out/
 
 ### Linux ###
 *~
@@ -14,9 +14,6 @@ out/
 .Trash-*
 
 ### macOS ###
-Icon
-Network Trash Folder
-Temporary Items
 ._*
 .apdisk
 .AppleDB
@@ -31,17 +28,20 @@ Temporary Items
 .TemporaryItems
 .Trashes
 .VolumeIcon.icns
+Icon
+Network Trash Folder
+Temporary Items
 
 ### SBT ###
+.cache
+.history
+.lib/
 dist/*
-target/
 lib_managed/
-src_managed/
 project/boot/
 project/plugins/project/
-.history
-.cache
-.lib/
+src_managed/
+target/
 
 ### Scala ###
 *.class
@@ -52,11 +52,6 @@ project/plugins/project/
 
 ### Windows ###
 $RECYCLE.BIN/
-[Dd]esktop.ini
-ehthumbs.db
-ehthumbs_vista.db
-Thumbs.db
-Thumbs.db:encryptable
 *.cab
 *.lnk
 *.msi
@@ -64,3 +59,8 @@ Thumbs.db:encryptable
 *.msm
 *.msp
 *.stackdump
+[Dd]esktop.ini
+ehthumbs.db
+ehthumbs_vista.db
+Thumbs.db
+Thumbs.db:encryptable
