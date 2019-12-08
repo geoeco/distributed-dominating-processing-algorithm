@@ -7,8 +7,7 @@ import scala.collection.mutable
 
 class CandidateCellFetcher(k: Int) {
 
-  def fetch(
-    cellAttributesPerCell: Map[Cell, CellAttributes]): Map[Cell, CellLowerBounds] = {
+  def fetch(cellAttributesPerCell: Map[Cell, CellAttributes]): Map[Cell, CellLowerBounds] = {
 
     val intermediateCandidateCells =
       cellAttributesPerCell

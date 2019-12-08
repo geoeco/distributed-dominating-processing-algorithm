@@ -7,9 +7,7 @@ import org.apache.spark.sql.{Dataset, SparkSession}
 class QueryExecutor(queryConfig: QueryConfig, spark: SparkSession) {
 
   private[this] val cellAttributesPerCellCalculator =
-    new CellAttributesPerCellCalculator(
-      queryConfig.dimensions,
-      queryConfig.cellsPerDimension)
+    new CellAttributesPerCellCalculator(queryConfig.dimensions, queryConfig.cellsPerDimension)
 
   private[this] val candidateCellFetcher =
     new CandidateCellFetcher(queryConfig.k)
@@ -18,23 +16,18 @@ class QueryExecutor(queryConfig: QueryConfig, spark: SparkSession) {
     new CandidatePointFetcher(queryConfig.k, spark)
 
   private[this] val topkPointFetcher =
-    new TopkPointFetcher(
-      queryConfig.k,
-      queryConfig.dimensions,
-      spark)
+    new TopkPointFetcher(queryConfig.k, queryConfig.dimensions, spark)
 
   def execute(inputPath: String): Seq[PointScore] = {
     val inputDataset = parseInput(inputPath).persist()
     val pointCountsPerCell = getPointCountsPerCell(inputDataset)
 
-    val cellAttributesPerCell =
-      cellAttributesPerCellCalculator.calculate(pointCountsPerCell)
+    val cellAttributesPerCell = cellAttributesPerCellCalculator.calculate(pointCountsPerCell)
 
     val candidateCells = candidateCellFetcher.fetch(cellAttributesPerCell)
     val bcCandidateCells = spark.sparkContext.broadcast(candidateCells)
 
-    val candidatePoints =
-      candidatePointFetcher.fetch(inputDataset, bcCandidateCells)
+    val candidatePoints = candidatePointFetcher.fetch(inputDataset, bcCandidateCells)
 
     topkPointFetcher.fetch(inputDataset, candidatePoints, bcCandidateCells)
   }

@@ -7,8 +7,7 @@ class CellAttributesPerCellCalculator(dimensions: Int, cellsPerDimension: Int) {
   private[this] val dominatingBoundPairCalculator =
     new DominatingBoundPairCalculator(cellsPerDimension)
 
-  private[this] val cellIdRange =
-    0L until Math.pow(cellsPerDimension, dimensions).toLong
+  private[this] val cellIdRange = 0L until Math.pow(cellsPerDimension, dimensions).toLong
 
   def calculate(pointCountsPerCell: Map[Cell, Long]): Map[Cell, CellAttributes] = {
     val dominatingBoundsPerCell = getDominatingBoundsPerCell(pointCountsPerCell)
