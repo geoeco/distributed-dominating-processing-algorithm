@@ -1,6 +1,6 @@
-package gr.auth.csd.datalab.ddpa.schema
+package gr.auth.csd.datalab.ddpa.models
 
-case class CellAttributes(
+final case class CellAttributes(
   pointCount: Long,
   lowerDominatingBound: Long,
   upperDominatingBound: Long,

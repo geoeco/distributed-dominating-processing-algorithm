@@ -1,14 +1,14 @@
 package gr.auth.csd.datalab.ddpa
 
 import gr.auth.csd.datalab.ddpa.implicits.CellConverter
-import gr.auth.csd.datalab.ddpa.schema.{CellAttributes, CellLowerBounds}
+import gr.auth.csd.datalab.ddpa.models.{CellAttributes, CellLowerBounds}
 import org.scalatest.{FunSuite, Matchers}
 
 class CandidateCellFetcherTest extends FunSuite with Matchers {
 
   import CandidateCellFetcherTest._
 
-  private[this] val candidateCellFetcher = new CandidateCellFetcher(k)
+  private val candidateCellFetcher = new CandidateCellFetcher(k)
 
   test("it should return the candidate cells with their lower bounds") {
     val cellAttributesPerCell = Map(

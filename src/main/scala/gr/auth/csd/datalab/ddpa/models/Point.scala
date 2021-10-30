@@ -1,23 +1,21 @@
-package gr.auth.csd.datalab.ddpa.schema
+package gr.auth.csd.datalab.ddpa.models
 
 import gr.auth.csd.datalab.ddpa.implicits.CellConverter
 
-case class Point(coordinates: Seq[Double], parentCell: Cell) {
+final case class Point(coordinates: Seq[Double], parentCell: Cell) {
 
   def dominates(that: Point): Boolean = {
     val coordinatePairs = this.coordinates.zip(that.coordinates)
 
     val dominatesAtLeastOneDimension =
-      coordinatePairs
-        .exists { case (thisCoordinate, thatCoordinate) =>
-          thisCoordinate < thatCoordinate
-        }
+      coordinatePairs.exists { case (thisCoordinate, thatCoordinate) =>
+        thisCoordinate < thatCoordinate
+      }
 
     val notDominatedInAnyDimension =
-      !coordinatePairs
-        .exists { case (thisCoordinate, thatCoordinate) =>
-          thisCoordinate > thatCoordinate
-        }
+      !coordinatePairs.exists { case (thisCoordinate, thatCoordinate) =>
+        thisCoordinate > thatCoordinate
+      }
 
     dominatesAtLeastOneDimension && notDominatedInAnyDimension
   }
@@ -28,7 +26,8 @@ object Point {
   def apply(
     rawPoint: String,
     cellWidth: Double,
-    minAllowedCoordinateValue: Double): Point = {
+    minAllowedCoordinateValue: Double
+  ): Point = {
 
     val pointCoordinates =
       rawPoint
@@ -38,8 +37,7 @@ object Point {
 
     val parentCell =
       pointCoordinates
-        .map(coordinate =>
-          Math.floor((coordinate - minAllowedCoordinateValue) / cellWidth).toInt)
+        .map(coordinate => Math.floor((coordinate - minAllowedCoordinateValue) / cellWidth).toInt)
         .toCell
 
     Point(pointCoordinates, parentCell)

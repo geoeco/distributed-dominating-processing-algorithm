@@ -1,14 +1,14 @@
 package gr.auth.csd.datalab.ddpa
 
 import gr.auth.csd.datalab.ddpa.implicits.CellConverter
-import gr.auth.csd.datalab.ddpa.schema.{Cell, CellAttributes}
+import gr.auth.csd.datalab.ddpa.models.{Cell, CellAttributes}
 import org.scalatest.{FunSuite, Matchers}
 
 class CellAttributesPerCellCalculatorTest extends FunSuite with Matchers {
 
   import CellAttributesPerCellCalculatorTest._
 
-  private[this] val cellAttributesPerCellCalculator =
+  private val cellAttributesPerCellCalculator =
     new CellAttributesPerCellCalculator(dimensions, cellsPerDimension)
 
   test("it should calculate the cell attributes for all cells containing " +

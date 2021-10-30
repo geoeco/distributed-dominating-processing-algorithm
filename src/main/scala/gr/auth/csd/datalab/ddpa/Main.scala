@@ -3,7 +3,7 @@ package gr.auth.csd.datalab.ddpa
 import java.io.{File, PrintWriter}
 
 import gr.auth.csd.datalab.ddpa.config.{CommandLineConfig, QueryConfig}
-import gr.auth.csd.datalab.ddpa.schema.PointScore
+import gr.auth.csd.datalab.ddpa.models.PointScore
 import org.apache.spark.sql.SparkSession
 
 object Main {
@@ -16,17 +16,10 @@ object Main {
   }
 
   def run(commandLineConfig: CommandLineConfig): Unit = {
-    val spark = SparkSession.builder.getOrCreate()
+    implicit val spark = SparkSession.builder.getOrCreate()
 
-    val queryConfig =
-      QueryConfig(
-        commandLineConfig.k,
-        commandLineConfig.dimensions,
-        commandLineConfig.cellsPerDimension,
-        commandLineConfig.getCellWidth,
-        commandLineConfig.minAllowedCoordinateValue)
-
-    val queryExecutor = new QueryExecutor(queryConfig, spark)
+    val queryConfig = QueryConfig.fromCommandLineConfig(commandLineConfig)
+    val queryExecutor = QueryExecutor(queryConfig)
 
     val topkPoints = queryExecutor.execute(commandLineConfig.inputPath)
     writeOutput(topkPoints, commandLineConfig.outputDir)

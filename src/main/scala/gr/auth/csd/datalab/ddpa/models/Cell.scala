@@ -1,21 +1,19 @@
-package gr.auth.csd.datalab.ddpa.schema
+package gr.auth.csd.datalab.ddpa.models
 
-case class Cell(coordinates: Seq[Int]) {
+final case class Cell(coordinates: Seq[Int]) {
 
   def partiallyDominates(that: Cell): Boolean = {
     val coordinatePairs = this.coordinates.zip(that.coordinates)
 
     val dominates =
-      !coordinatePairs
-        .exists { case (thisCoordinate, thatCoordinate) =>
-          thisCoordinate > thatCoordinate
-        }
+      !coordinatePairs.exists { case (thisCoordinate, thatCoordinate) =>
+        thisCoordinate > thatCoordinate
+      }
 
     val doesNotFullyDominate =
-      coordinatePairs
-        .exists { case (thisCoordinate, thatCoordinate) =>
-          thisCoordinate == thatCoordinate
-        }
+      coordinatePairs.exists { case (thisCoordinate, thatCoordinate) =>
+        thisCoordinate == thatCoordinate
+      }
 
     dominates && doesNotFullyDominate
   }

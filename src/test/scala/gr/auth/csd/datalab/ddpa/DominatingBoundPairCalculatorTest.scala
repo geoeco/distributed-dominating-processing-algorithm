@@ -1,15 +1,14 @@
 package gr.auth.csd.datalab.ddpa
 
 import gr.auth.csd.datalab.ddpa.implicits.CellConverter
-import gr.auth.csd.datalab.ddpa.schema.{BoundPair, Cell}
+import gr.auth.csd.datalab.ddpa.models.{BoundPair, Cell}
 import org.scalatest.{FunSuite, Matchers}
 
 class DominatingBoundPairCalculatorTest extends FunSuite with Matchers {
 
   import DominatingBoundPairCalculatorTest._
 
-  private[this] val dominatingBoundPairCalculator =
-    new DominatingBoundPairCalculator(cellsPerDimension)
+  private val dominatingBoundPairCalculator = new DominatingBoundPairCalculator(cellsPerDimension)
 
   test("it should calculate the dominating bound pair of a cell in the " +
     "middle of the grid") {

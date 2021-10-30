@@ -1,6 +1,6 @@
 package gr.auth.csd.datalab.ddpa.config
 
-case class CommandLineConfig(
+final case class CommandLineConfig(
   k: Int = 0,
   dimensions: Int = 0,
   cellsPerDimension: Int = 0,

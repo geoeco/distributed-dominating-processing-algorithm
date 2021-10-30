@@ -1,7 +1,7 @@
 package gr.auth.csd.datalab.ddpa
 
 import gr.auth.csd.datalab.ddpa.config.QueryConfig
-import gr.auth.csd.datalab.ddpa.schema.PointScore
+import gr.auth.csd.datalab.ddpa.models.PointScore
 import gr.auth.csd.datalab.ddpa.spark.SharedSparkSession
 import org.scalatest.{FunSuite, Matchers}
 
@@ -9,7 +9,7 @@ class QueryExecutorTest extends FunSuite with Matchers with SharedSparkSession {
 
   import QueryExecutorTest._
 
-  private[this] val queryExecutor = new QueryExecutor(queryConfig, spark)
+  private val queryExecutor = QueryExecutor(queryConfig)(spark)
 
   test("it should return the k points with the highest score") {
     val inputPath = getClass.getResource("/input.txt").getPath
