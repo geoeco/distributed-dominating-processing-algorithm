@@ -24,9 +24,9 @@ final case class Point(coordinates: Seq[Double], parentCell: Cell) {
 object Point {
 
   def apply(
-    rawPoint: String,
-    cellWidth: Double,
-    minAllowedCoordinateValue: Double
+      rawPoint: String,
+      cellWidth: Double,
+      minAllowedCoordinateValue: Double
   ): Point = {
 
     val pointCoordinates =
@@ -37,7 +37,9 @@ object Point {
 
     val parentCell =
       pointCoordinates
-        .map(coordinate => Math.floor((coordinate - minAllowedCoordinateValue) / cellWidth).toInt)
+        .map(coordinate =>
+          Math.floor((coordinate - minAllowedCoordinateValue) / cellWidth).toInt
+        )
         .toCell
 
     Point(pointCoordinates, parentCell)

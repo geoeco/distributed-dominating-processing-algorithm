@@ -5,23 +5,25 @@ import gr.auth.csd.datalab.ddpa.models.{Cell, Point, PointScore}
 import org.apache.spark.sql.{Dataset, SparkSession}
 
 class QueryExecutor(
-  cellAttributesPerCellCalculator: CellAttributesPerCellCalculator,
-  candidateCellFetcher: CandidateCellFetcher,
-  candidatePointFetcher: CandidatePointFetcher,
-  topkPointFetcher: TopkPointFetcher,
-  queryConfig: QueryConfig
+    cellAttributesPerCellCalculator: CellAttributesPerCellCalculator,
+    candidateCellFetcher: CandidateCellFetcher,
+    candidatePointFetcher: CandidatePointFetcher,
+    topkPointFetcher: TopkPointFetcher,
+    queryConfig: QueryConfig
 )(implicit spark: SparkSession) {
 
   def execute(inputPath: String): Seq[PointScore] = {
     val inputDataset = parseInput(inputPath).persist()
     val pointCountsPerCell = getPointCountsPerCell(inputDataset)
 
-    val cellAttributesPerCell = cellAttributesPerCellCalculator.calculate(pointCountsPerCell)
+    val cellAttributesPerCell =
+      cellAttributesPerCellCalculator.calculate(pointCountsPerCell)
 
     val candidateCells = candidateCellFetcher.fetch(cellAttributesPerCell)
     val bcCandidateCells = spark.sparkContext.broadcast(candidateCells)
 
-    val candidatePoints = candidatePointFetcher.fetch(inputDataset, bcCandidateCells)
+    val candidatePoints =
+      candidatePointFetcher.fetch(inputDataset, bcCandidateCells)
     topkPointFetcher.fetch(inputDataset, candidatePoints, bcCandidateCells)
   }
 
@@ -32,8 +34,7 @@ class QueryExecutor(
     val bcMinAllowedCoordinateValue =
       spark.sparkContext.broadcast(queryConfig.minAllowedCoordinateValue)
 
-    spark
-      .read
+    spark.read
       .textFile(inputPath)
       .map(Point(_, bcCellWidth.value, bcMinAllowedCoordinateValue.value))
   }
@@ -50,9 +51,14 @@ class QueryExecutor(
 
 object QueryExecutor {
 
-  def apply(queryConfig: QueryConfig)(implicit spark: SparkSession): QueryExecutor =
+  def apply(
+      queryConfig: QueryConfig
+  )(implicit spark: SparkSession): QueryExecutor =
     new QueryExecutor(
-      new CellAttributesPerCellCalculator(queryConfig.dimensions, queryConfig.cellsPerDimension),
+      new CellAttributesPerCellCalculator(
+        queryConfig.dimensions,
+        queryConfig.cellsPerDimension
+      ),
       new CandidateCellFetcher(queryConfig.k),
       new CandidatePointFetcher(queryConfig.k),
       new TopkPointFetcher(queryConfig.k, queryConfig.dimensions),

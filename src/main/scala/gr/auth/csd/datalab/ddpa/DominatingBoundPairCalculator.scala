@@ -6,9 +6,9 @@ import gr.auth.csd.datalab.ddpa.models.{BoundPair, Cell}
 class DominatingBoundPairCalculator(cellsPerDimension: Int) {
 
   def calculate(
-    cell: Cell,
-    pointCount: Long,
-    neighboringCellDominatingBounds: Map[Cell, BoundPair]
+      cell: Cell,
+      pointCount: Long,
+      neighboringCellDominatingBounds: Map[Cell, BoundPair]
   ): BoundPair = {
 
     val lowerDominatingBound =
@@ -19,23 +19,22 @@ class DominatingBoundPairCalculator(cellsPerDimension: Int) {
         neighboringCellDominatingBounds(closestFullyDominatedNeighbor).upper
       }
 
-    val upperDominatingBound = getUpperDominatingBound(cell, pointCount, neighboringCellDominatingBounds)
+    val upperDominatingBound =
+      getUpperDominatingBound(cell, pointCount, neighboringCellDominatingBounds)
     BoundPair(lowerDominatingBound, upperDominatingBound)
   }
 
-  /**
-    * Calculates the upper dominating bound of the pivot cell by applying the
+  /** Calculates the upper dominating bound of the pivot cell by applying the
     * inclusion-exclusion principle.
     */
   private def getUpperDominatingBound(
-    cell: Cell,
-    pointCount: Long,
-    neighboringCellBounds: Map[Cell, BoundPair]
+      cell: Cell,
+      pointCount: Long,
+      neighboringCellBounds: Map[Cell, BoundPair]
   ): Long = {
 
     val dimensionsToCheck =
-      cell.coordinates
-        .zipWithIndex
+      cell.coordinates.zipWithIndex
         .flatMap { case (coordinate, dimension) =>
           if (coordinate == cellsPerDimension - 1) None
           else Some(dimension)
@@ -48,7 +47,8 @@ class DominatingBoundPairCalculator(cellsPerDimension: Int) {
             n,
             cell,
             neighboringCellBounds,
-            dimensionsToCheck)
+            dimensionsToCheck
+          )
 
         if (n % 2 == 0)
           acc - intersectionCardinalitySum
@@ -57,31 +57,28 @@ class DominatingBoundPairCalculator(cellsPerDimension: Int) {
       } + pointCount
   }
 
-  /**
-    * Calculates the sum of the cardinalities of the n-tuple-wise intersections.
+  /** Calculates the sum of the cardinalities of the n-tuple-wise intersections.
     * (e.g. If n = 2, cardinalities of intersections consisting of 2 sets each
     * are summed.)
     */
   private def getIntersectionCardinalitySum(
-    n: Int,
-    cell: Cell,
-    neighboringCellBounds: Map[Cell, BoundPair],
-    dimensionsToCheck: Seq[Int]
+      n: Int,
+      cell: Cell,
+      neighboringCellBounds: Map[Cell, BoundPair],
+      dimensionsToCheck: Seq[Int]
   ): Long = {
 
     dimensionsToCheck
       .combinations(n)
       .toList
       .foldLeft(0: Long) { (acc, combination) =>
-        val neighborCell = cell.coordinates
-          .zipWithIndex
-          .map { case (coordinate, index) =>
+        val neighborCell = cell.coordinates.zipWithIndex.map {
+          case (coordinate, index) =>
             if (combination.contains(index))
               coordinate + 1
             else
               coordinate
-          }
-          .toCell
+        }.toCell
 
         acc + neighboringCellBounds(neighborCell).upper
       }

@@ -9,8 +9,8 @@ class CandidatePointFetcher(k: Int)(implicit spark: SparkSession) {
   import CandidatePointFetcher._
 
   def fetch(
-    inputDataset: Dataset[Point],
-    candidateCells: Broadcast[Map[Cell, CellLowerBounds]]
+      inputDataset: Dataset[Point],
+      candidateCells: Broadcast[Map[Cell, CellLowerBounds]]
   ): Seq[Point] = {
 
     import spark.implicits._
@@ -31,7 +31,9 @@ class CandidatePointFetcher(k: Int)(implicit spark: SparkSession) {
             point,
             bcK.value,
             candidateCells.value(point.parentCell).lowerDominated,
-            bcPointsInCandidateCells.value))
+            bcPointsInCandidateCells.value
+          )
+        )
         .collect()
         .toList
 
@@ -46,18 +48,21 @@ class CandidatePointFetcher(k: Int)(implicit spark: SparkSession) {
 object CandidatePointFetcher {
 
   def pruneIfDominatedByAtLeastK(
-    point: Point,
-    k: Int,
-    initialDominatedCount: Long,
-    otherPoints: Seq[Point]
+      point: Point,
+      k: Int,
+      initialDominatedCount: Long,
+      otherPoints: Seq[Point]
   ): Option[Point] = {
 
     val dominatedCount =
       otherPoints
         .foldLeft(initialDominatedCount)((currentDominatedCount, otherPoint) =>
-          if (otherPoint.parentCell.partiallyDominates(point.parentCell)
-            && otherPoint.dominates(point)) currentDominatedCount + 1L
-          else currentDominatedCount)
+          if (
+            otherPoint.parentCell.partiallyDominates(point.parentCell)
+            && otherPoint.dominates(point)
+          ) currentDominatedCount + 1L
+          else currentDominatedCount
+        )
 
     if (dominatedCount >= k) None
     else Some(point)
