@@ -1,17 +1,18 @@
 package gr.auth.csd.datalab.ddpa
 
-import gr.auth.csd.datalab.ddpa.schema.{Cell, CellLowerBounds, Point, PointScore}
+import gr.auth.csd.datalab.ddpa.models.{Cell, CellLowerBounds, Point, PointScore}
 import org.apache.spark.broadcast.Broadcast
 import org.apache.spark.sql.{Dataset, SparkSession}
 
-class TopkPointFetcher(k: Int, dimensions: Int, spark: SparkSession) {
+class TopkPointFetcher(k: Int, dimensions: Int)(implicit spark: SparkSession) {
 
   import TopkPointFetcher._
 
   def fetch(
     inputDataset: Dataset[Point],
     candidatePoints: Seq[Point],
-    candidateCells: Broadcast[Map[Cell, CellLowerBounds]]): Seq[PointScore] = {
+    candidateCells: Broadcast[Map[Cell, CellLowerBounds]]
+  ): Seq[PointScore] = {
 
     import spark.implicits._
     val trimmedInputDataset = trimInputDataset(inputDataset, candidatePoints)
@@ -39,9 +40,10 @@ class TopkPointFetcher(k: Int, dimensions: Int, spark: SparkSession) {
     * the calculation of the candidate point scores, as they are already
     * included in the lower dominating bound of ALL the candidates' parent cells.
     */
-  private[this] def trimInputDataset(
+  private def trimInputDataset(
     inputDataset: Dataset[Point],
-    candidates: Seq[Point]): Dataset[Point] = {
+    candidates: Seq[Point]
+  ): Dataset[Point] = {
 
     val maxRequiredCellCoordinatePerDimension =
       candidates
@@ -67,16 +69,14 @@ class TopkPointFetcher(k: Int, dimensions: Int, spark: SparkSession) {
         })
   }
 
-  private[this] def getTopK(
-    candidatePointScores: Dataset[PointScore]): Seq[PointScore] = {
+  private def getTopK(candidatePointScores: Dataset[PointScore]): Seq[PointScore] = {
     import spark.implicits._
     val bcK = spark.sparkContext.broadcast(k)
-    val topK =
-      candidatePointScores
-        .orderBy('score.desc)
-        .limit(bcK.value)
-        .collect()
-        .toList
+    val topK = candidatePointScores
+      .orderBy('score.desc)
+      .limit(bcK.value)
+      .collect()
+      .toList
 
     bcK.destroy()
     topK
@@ -87,12 +87,9 @@ object TopkPointFetcher {
 
   def getDominatingCandidatesFromPartiallyDominatingCells(
     point: Point,
-    candidates: Seq[Point]): Seq[Point] =
-
-    candidates
-      .flatMap { candidatePoint =>
-        if (candidatePoint.parentCell.partiallyDominates(point.parentCell)
-          && candidatePoint.dominates(point)) Some(candidatePoint)
-        else None
-      }
+    candidates: Seq[Point]
+  ): Seq[Point] = candidates.collect {
+    case candidatePoint if (candidatePoint.parentCell.partiallyDominates(point.parentCell)
+      && candidatePoint.dominates(point)) => candidatePoint
+  }
 }

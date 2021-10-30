@@ -1,14 +1,15 @@
 package gr.auth.csd.datalab.ddpa
 
 import gr.auth.csd.datalab.ddpa.implicits.CellConverter
-import gr.auth.csd.datalab.ddpa.schema.{BoundPair, Cell}
+import gr.auth.csd.datalab.ddpa.models.{BoundPair, Cell}
 
 class DominatingBoundPairCalculator(cellsPerDimension: Int) {
 
   def calculate(
     cell: Cell,
     pointCount: Long,
-    neighboringCellDominatingBounds: Map[Cell, BoundPair]): BoundPair = {
+    neighboringCellDominatingBounds: Map[Cell, BoundPair]
+  ): BoundPair = {
 
     val lowerDominatingBound =
       if (cell.coordinates.contains(cellsPerDimension - 1))
@@ -19,41 +20,32 @@ class DominatingBoundPairCalculator(cellsPerDimension: Int) {
       }
 
     val upperDominatingBound =
-      getUpperDominatingBound(
-        cell,
-        pointCount,
-        neighboringCellDominatingBounds)
+      getUpperDominatingBound(cell, pointCount, neighboringCellDominatingBounds)
 
     BoundPair(lowerDominatingBound, upperDominatingBound)
   }
 
-  // TODO: Simplify the two following methods.
   /**
     * Calculates the upper dominating bound of the pivot cell by applying the
     * inclusion-exclusion principle.
     */
-  private[this] def getUpperDominatingBound(
+  private def getUpperDominatingBound(
     cell: Cell,
     pointCount: Long,
-    neighboringCellBounds: Map[Cell, BoundPair]): Long = {
+    neighboringCellBounds: Map[Cell, BoundPair]
+  ): Long = {
 
     val dimensionsToCheck =
-      cell
-        .coordinates
+      cell.coordinates
         .zipWithIndex
-        .flatMap { case (coordinate, dimension) =>
-          if (coordinate == cellsPerDimension - 1) None
-          else Some(dimension)
+        .collect {
+          case (coordinate, dimension) if !(coordinate == cellsPerDimension - 1) => dimension
         }
 
     (1 to dimensionsToCheck.length)
       .foldLeft(0: Long) { (acc, n) =>
         val intersectionCardinalitySum =
-          getIntersectionCardinalitySum(
-            n,
-            cell,
-            neighboringCellBounds,
-            dimensionsToCheck)
+          getIntersectionCardinalitySum(n, cell, neighboringCellBounds, dimensionsToCheck)
 
         if (n % 2 == 0)
           acc - intersectionCardinalitySum
@@ -67,28 +59,26 @@ class DominatingBoundPairCalculator(cellsPerDimension: Int) {
     * (e.g. If n = 2, cardinalities of intersections consisting of 2 sets each
     * are summed.)
     */
-  private[this] def getIntersectionCardinalitySum(
+  private def getIntersectionCardinalitySum(
     n: Int,
     cell: Cell,
     neighboringCellBounds: Map[Cell, BoundPair],
-    dimensionsToCheck: Seq[Int]): Long = {
+    dimensionsToCheck: Seq[Int]
+  ): Long = {
 
     dimensionsToCheck
       .combinations(n)
       .toList
       .foldLeft(0: Long) { (acc, combination) =>
-
-        val neighborCell =
-          cell
-            .coordinates
-            .zipWithIndex
-            .map { case (coordinate, index) =>
-              if (combination.contains(index))
-                coordinate + 1
-              else
-                coordinate
-            }
-            .toCell
+        val neighborCell = cell.coordinates
+          .zipWithIndex
+          .map { case (coordinate, index) =>
+            if (combination.contains(index))
+              coordinate + 1
+            else
+              coordinate
+          }
+          .toCell
 
         acc + neighboringCellBounds(neighborCell).upper
       }

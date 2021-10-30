@@ -1,14 +1,14 @@
 package gr.auth.csd.datalab.ddpa
 
 import gr.auth.csd.datalab.ddpa.implicits.CellConverter
-import gr.auth.csd.datalab.ddpa.schema.{Cell, CellAttributes}
+import gr.auth.csd.datalab.ddpa.models.{Cell, CellAttributes}
 import org.scalatest.{FunSuite, Matchers}
 
 class CellAttributesPerCellCalculatorTest extends FunSuite with Matchers {
 
   import CellAttributesPerCellCalculatorTest._
 
-  private[this] val cellAttributesPerCellCalculator =
+  private val cellAttributesPerCellCalculator =
     new CellAttributesPerCellCalculator(dimensions, cellsPerDimension)
 
   test("it should calculate the cell attributes for all cells containing " +
@@ -28,7 +28,8 @@ class CellAttributesPerCellCalculatorTest extends FunSuite with Matchers {
       Seq(3, 0).toCell -> 10,
       Seq(3, 1).toCell -> 10,
       Seq(3, 2).toCell -> 10,
-      Seq(3, 3).toCell -> 10)
+      Seq(3, 3).toCell -> 10
+    )
 
     val actual = cellAttributesPerCellCalculator.calculate(pointCountsPerCell)
     val expected = Map(
@@ -46,7 +47,8 @@ class CellAttributesPerCellCalculatorTest extends FunSuite with Matchers {
       Seq(3, 0).toCell -> CellAttributes(10, 0, 40, 0),
       Seq(3, 1).toCell -> CellAttributes(10, 0, 30, 20),
       Seq(3, 2).toCell -> CellAttributes(10, 0, 20, 50),
-      Seq(3, 3).toCell -> CellAttributes(10, 0, 10, 80))
+      Seq(3, 3).toCell -> CellAttributes(10, 0, 10, 80)
+    )
 
     actual shouldBe expected
   }

@@ -1,15 +1,14 @@
 package gr.auth.csd.datalab.ddpa
 
 import gr.auth.csd.datalab.ddpa.implicits.CellConverter
-import gr.auth.csd.datalab.ddpa.schema.{BoundPair, Cell}
+import gr.auth.csd.datalab.ddpa.models.{BoundPair, Cell}
 import org.scalatest.{FunSuite, Matchers}
 
 class DominatingBoundPairCalculatorTest extends FunSuite with Matchers {
 
   import DominatingBoundPairCalculatorTest._
 
-  private[this] val dominatingBoundPairCalculator =
-    new DominatingBoundPairCalculator(cellsPerDimension)
+  private val dominatingBoundPairCalculator = new DominatingBoundPairCalculator(cellsPerDimension)
 
   test("it should calculate the dominating bound pair of a cell in the " +
     "middle of the grid") {
@@ -22,13 +21,11 @@ class DominatingBoundPairCalculatorTest extends FunSuite with Matchers {
       Seq(2, 1, 1).toCell -> BoundPair(0, 38),
       Seq(2, 1, 2).toCell -> BoundPair(0, 18),
       Seq(2, 2, 1).toCell -> BoundPair(0, 19),
-      Seq(2, 2, 2).toCell -> BoundPair(0, 10))
+      Seq(2, 2, 2).toCell -> BoundPair(0, 10)
+    )
 
-    val actual = dominatingBoundPairCalculator
-      .calculate(
-        cell,
-        pointCount,
-        neighboringCellDominatingBounds)
+    val actual =
+      dominatingBoundPairCalculator.calculate(cell, pointCount, neighboringCellDominatingBounds)
     val expected = BoundPair(10, 59)
 
     actual shouldBe expected
@@ -40,11 +37,8 @@ class DominatingBoundPairCalculatorTest extends FunSuite with Matchers {
     val pointCount = 10
     val neighboringCellDominatingBounds = Map.empty[Cell, BoundPair]
 
-    val actual = dominatingBoundPairCalculator
-      .calculate(
-        cell,
-        pointCount,
-        neighboringCellDominatingBounds)
+    val actual =
+      dominatingBoundPairCalculator.calculate(cell, pointCount, neighboringCellDominatingBounds)
     val expected = BoundPair(0, 10)
 
     actual shouldBe expected
@@ -54,14 +48,10 @@ class DominatingBoundPairCalculatorTest extends FunSuite with Matchers {
     "edge of the grid for one dimension") {
     val cell = Seq(2, 2, 1).toCell
     val pointCount = 9
-    val neighboringCellDominatingBounds = Map(
-      Seq(2, 2, 2).toCell -> BoundPair(0, 10))
+    val neighboringCellDominatingBounds = Map(Seq(2, 2, 2).toCell -> BoundPair(0, 10))
 
-    val actual = dominatingBoundPairCalculator
-      .calculate(
-        cell,
-        pointCount,
-        neighboringCellDominatingBounds)
+    val actual =
+      dominatingBoundPairCalculator.calculate(cell, pointCount, neighboringCellDominatingBounds)
     val expected = BoundPair(0, 19)
 
     actual shouldBe expected

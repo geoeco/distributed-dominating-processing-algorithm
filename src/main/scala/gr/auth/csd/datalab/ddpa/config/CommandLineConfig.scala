@@ -1,6 +1,6 @@
 package gr.auth.csd.datalab.ddpa.config
 
-case class CommandLineConfig(
+final case class CommandLineConfig(
   k: Int = 0,
   dimensions: Int = 0,
   cellsPerDimension: Int = 0,
@@ -9,8 +9,8 @@ case class CommandLineConfig(
   inputPath: String = "",
   outputDir: String = ""
 ) {
-  def getCellWidth: Double = (maxAllowedCoordinateValue -
-    minAllowedCoordinateValue) / cellsPerDimension
+  def getCellWidth: Double =
+    (maxAllowedCoordinateValue - minAllowedCoordinateValue) / cellsPerDimension
 }
 
 object CommandLineConfig {

@@ -1,7 +1,7 @@
 package gr.auth.csd.datalab.ddpa
 
 import gr.auth.csd.datalab.ddpa.config.QueryConfig
-import gr.auth.csd.datalab.ddpa.schema.PointScore
+import gr.auth.csd.datalab.ddpa.models.PointScore
 import gr.auth.csd.datalab.ddpa.spark.SharedSparkSession
 import org.scalatest.{FunSuite, Matchers}
 
@@ -9,7 +9,7 @@ class QueryExecutorTest extends FunSuite with Matchers with SharedSparkSession {
 
   import QueryExecutorTest._
 
-  private[this] val queryExecutor = new QueryExecutor(queryConfig, spark)
+  private val queryExecutor = QueryExecutor(queryConfig)(spark)
 
   test("it should return the k points with the highest score") {
     val inputPath = getClass.getResource("/input.txt").getPath
@@ -25,7 +25,8 @@ class QueryExecutorTest extends FunSuite with Matchers with SharedSparkSession {
       PointScore(Seq(0.03770613260415734, 0.2945584029439181, 0.037912079495927675), 535),
       PointScore(Seq(0.30780534838295504, 0.03746794860404956, 0.06630889887025859), 512),
       PointScore(Seq(0.07765325189727956, 0.3053961830758003, 0.04107907569810354), 497),
-      PointScore(Seq(0.1420590296524259, 0.24467124493142756, 0.07746961763021076), 492))
+      PointScore(Seq(0.1420590296524259, 0.24467124493142756, 0.07746961763021076), 492)
+    )
 
     actual shouldBe expected
   }

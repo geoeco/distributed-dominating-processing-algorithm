@@ -1,4 +1,4 @@
-package gr.auth.csd.datalab.ddpa.schema
+package gr.auth.csd.datalab.ddpa.models
 
 import org.scalatest.{FunSuite, Matchers}
 
