@@ -24,16 +24,15 @@ class CandidatePointFetcher(k: Int)(implicit spark: SparkSession) {
       spark.sparkContext.broadcast(pointsInCandidateCells.collect().toList)
     val bcK = spark.sparkContext.broadcast(k)
 
-    val candidatePoints =
-      pointsInCandidateCells
-        .flatMap(point =>
-          pruneIfDominatedByAtLeastK(
-            point,
-            bcK.value,
-            candidateCells.value(point.parentCell).lowerDominated,
-            bcPointsInCandidateCells.value))
-        .collect()
-        .toList
+    val candidatePoints = pointsInCandidateCells
+      .flatMap(point =>
+        pruneIfDominatedByAtLeastK(
+          point,
+          bcK.value,
+          candidateCells.value(point.parentCell).lowerDominated,
+          bcPointsInCandidateCells.value))
+      .collect()
+      .toList
 
     pointsInCandidateCells.unpersist()
     bcPointsInCandidateCells.destroy()
@@ -53,11 +52,12 @@ object CandidatePointFetcher {
   ): Option[Point] = {
 
     val dominatedCount =
-      otherPoints
-        .foldLeft(initialDominatedCount)((currentDominatedCount, otherPoint) =>
-          if (otherPoint.parentCell.partiallyDominates(point.parentCell)
-            && otherPoint.dominates(point)) currentDominatedCount + 1L
-          else currentDominatedCount)
+      otherPoints.foldLeft(initialDominatedCount) { (currentDominatedCount, otherPoint) =>
+        if (otherPoint.parentCell.partiallyDominates(point.parentCell) && otherPoint.dominates(point))
+          currentDominatedCount + 1L
+        else
+          currentDominatedCount
+      }
 
     if (dominatedCount >= k) None
     else Some(point)

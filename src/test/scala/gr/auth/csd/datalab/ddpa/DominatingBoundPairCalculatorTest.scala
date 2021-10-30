@@ -21,13 +21,11 @@ class DominatingBoundPairCalculatorTest extends FunSuite with Matchers {
       Seq(2, 1, 1).toCell -> BoundPair(0, 38),
       Seq(2, 1, 2).toCell -> BoundPair(0, 18),
       Seq(2, 2, 1).toCell -> BoundPair(0, 19),
-      Seq(2, 2, 2).toCell -> BoundPair(0, 10))
+      Seq(2, 2, 2).toCell -> BoundPair(0, 10)
+    )
 
-    val actual = dominatingBoundPairCalculator
-      .calculate(
-        cell,
-        pointCount,
-        neighboringCellDominatingBounds)
+    val actual =
+      dominatingBoundPairCalculator.calculate(cell, pointCount, neighboringCellDominatingBounds)
     val expected = BoundPair(10, 59)
 
     actual shouldBe expected
@@ -39,11 +37,8 @@ class DominatingBoundPairCalculatorTest extends FunSuite with Matchers {
     val pointCount = 10
     val neighboringCellDominatingBounds = Map.empty[Cell, BoundPair]
 
-    val actual = dominatingBoundPairCalculator
-      .calculate(
-        cell,
-        pointCount,
-        neighboringCellDominatingBounds)
+    val actual =
+      dominatingBoundPairCalculator.calculate(cell, pointCount, neighboringCellDominatingBounds)
     val expected = BoundPair(0, 10)
 
     actual shouldBe expected
@@ -53,14 +48,10 @@ class DominatingBoundPairCalculatorTest extends FunSuite with Matchers {
     "edge of the grid for one dimension") {
     val cell = Seq(2, 2, 1).toCell
     val pointCount = 9
-    val neighboringCellDominatingBounds = Map(
-      Seq(2, 2, 2).toCell -> BoundPair(0, 10))
+    val neighboringCellDominatingBounds = Map(Seq(2, 2, 2).toCell -> BoundPair(0, 10))
 
-    val actual = dominatingBoundPairCalculator
-      .calculate(
-        cell,
-        pointCount,
-        neighboringCellDominatingBounds)
+    val actual =
+      dominatingBoundPairCalculator.calculate(cell, pointCount, neighboringCellDominatingBounds)
     val expected = BoundPair(0, 19)
 
     actual shouldBe expected

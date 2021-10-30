@@ -19,7 +19,9 @@ class DominatingBoundPairCalculator(cellsPerDimension: Int) {
         neighboringCellDominatingBounds(closestFullyDominatedNeighbor).upper
       }
 
-    val upperDominatingBound = getUpperDominatingBound(cell, pointCount, neighboringCellDominatingBounds)
+    val upperDominatingBound =
+      getUpperDominatingBound(cell, pointCount, neighboringCellDominatingBounds)
+
     BoundPair(lowerDominatingBound, upperDominatingBound)
   }
 
@@ -36,19 +38,14 @@ class DominatingBoundPairCalculator(cellsPerDimension: Int) {
     val dimensionsToCheck =
       cell.coordinates
         .zipWithIndex
-        .flatMap { case (coordinate, dimension) =>
-          if (coordinate == cellsPerDimension - 1) None
-          else Some(dimension)
+        .collect {
+          case (coordinate, dimension) if !(coordinate == cellsPerDimension - 1) => dimension
         }
 
     (1 to dimensionsToCheck.length)
       .foldLeft(0: Long) { (acc, n) =>
         val intersectionCardinalitySum =
-          getIntersectionCardinalitySum(
-            n,
-            cell,
-            neighboringCellBounds,
-            dimensionsToCheck)
+          getIntersectionCardinalitySum(n, cell, neighboringCellBounds, dimensionsToCheck)
 
         if (n % 2 == 0)
           acc - intersectionCardinalitySum

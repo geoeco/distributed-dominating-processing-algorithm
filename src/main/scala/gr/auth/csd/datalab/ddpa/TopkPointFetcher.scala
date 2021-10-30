@@ -88,9 +88,8 @@ object TopkPointFetcher {
   def getDominatingCandidatesFromPartiallyDominatingCells(
     point: Point,
     candidates: Seq[Point]
-  ): Seq[Point] = candidates.flatMap { candidatePoint =>
-    if (candidatePoint.parentCell.partiallyDominates(point.parentCell)
-      && candidatePoint.dominates(point)) Some(candidatePoint)
-    else None
+  ): Seq[Point] = candidates.collect {
+    case candidatePoint if (candidatePoint.parentCell.partiallyDominates(point.parentCell)
+      && candidatePoint.dominates(point)) => candidatePoint
   }
 }

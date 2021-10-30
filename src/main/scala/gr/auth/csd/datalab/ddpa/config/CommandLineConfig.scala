@@ -9,8 +9,8 @@ final case class CommandLineConfig(
   inputPath: String = "",
   outputDir: String = ""
 ) {
-  def getCellWidth: Double = (maxAllowedCoordinateValue -
-    minAllowedCoordinateValue) / cellsPerDimension
+  def getCellWidth: Double =
+    (maxAllowedCoordinateValue - minAllowedCoordinateValue) / cellsPerDimension
 }
 
 object CommandLineConfig {

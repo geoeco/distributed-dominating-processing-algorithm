@@ -1,10 +1,10 @@
 package gr.auth.csd.datalab.ddpa
 
-import java.io.{File, PrintWriter}
-
 import gr.auth.csd.datalab.ddpa.config.{CommandLineConfig, QueryConfig}
 import gr.auth.csd.datalab.ddpa.models.PointScore
 import org.apache.spark.sql.SparkSession
+
+import java.io.{File, PrintWriter}
 
 object Main {
 
