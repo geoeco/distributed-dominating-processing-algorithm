@@ -1,11 +1,6 @@
 package gr.auth.csd.datalab.ddpa
 
-import gr.auth.csd.datalab.ddpa.models.{
-  Cell,
-  CellLowerBounds,
-  Point,
-  PointScore
-}
+import gr.auth.csd.datalab.ddpa.models.{Cell, CellLowerBounds, Point, PointScore}
 import org.apache.spark.broadcast.Broadcast
 import org.apache.spark.sql.{Dataset, SparkSession}
 
@@ -14,9 +9,9 @@ class TopkPointFetcher(k: Int, dimensions: Int)(implicit spark: SparkSession) {
   import TopkPointFetcher._
 
   def fetch(
-      inputDataset: Dataset[Point],
-      candidatePoints: Seq[Point],
-      candidateCells: Broadcast[Map[Cell, CellLowerBounds]]
+    inputDataset: Dataset[Point],
+    candidatePoints: Seq[Point],
+    candidateCells: Broadcast[Map[Cell, CellLowerBounds]]
   ): Seq[PointScore] = {
 
     import spark.implicits._
@@ -25,18 +20,11 @@ class TopkPointFetcher(k: Int, dimensions: Int)(implicit spark: SparkSession) {
 
     val candidatePointScores =
       trimmedInputDataset
-        .flatMap(
-          getDominatingCandidatesFromPartiallyDominatingCells(
-            _,
-            bcCandidatePoints.value
-          )
-        )
+        .flatMap(getDominatingCandidatesFromPartiallyDominatingCells(_, bcCandidatePoints.value))
         .groupByKey(candidate => candidate)
         .count()
         .map { case (candidate, partialScore) =>
-          val score = partialScore + candidateCells
-            .value(candidate.parentCell)
-            .lowerDominating
+          val score = partialScore + candidateCells.value(candidate.parentCell).lowerDominating
           PointScore(candidate.coordinates, score)
         }
 
@@ -47,19 +35,22 @@ class TopkPointFetcher(k: Int, dimensions: Int)(implicit spark: SparkSession) {
     topkDominatingPoints
   }
 
-  /** Trims the original dataset of all the points that are not required for
+  /**
+    * Trims the original dataset of all the points that are not required for
     * the calculation of the candidate point scores, as they are already
     * included in the lower dominating bound of ALL the candidates' parent cells.
     */
   private def trimInputDataset(
-      inputDataset: Dataset[Point],
-      candidates: Seq[Point]
+    inputDataset: Dataset[Point],
+    candidates: Seq[Point]
   ): Dataset[Point] = {
 
     val maxRequiredCellCoordinatePerDimension =
       candidates
         .foldLeft(Seq.fill(dimensions)(0)) { (acc, candidate) =>
-          candidate.parentCell.coordinates
+          candidate
+            .parentCell
+            .coordinates
             .zip(acc)
             .map { case (cellCoordinate, currentMaxRequiredCoordinate) =>
               Math.max(cellCoordinate, currentMaxRequiredCoordinate)
@@ -70,18 +61,15 @@ class TopkPointFetcher(k: Int, dimensions: Int)(implicit spark: SparkSession) {
       spark.sparkContext.broadcast(maxRequiredCellCoordinatePerDimension)
 
     inputDataset
-      .filter(
-        _.parentCell.coordinates
-          .zip(bcMaxRequiredCellCoordinatePerDimension.value)
-          .exists { case (cellCoordinate, maxRequiredCoordinate) =>
-            cellCoordinate <= maxRequiredCoordinate
-          }
-      )
+      .filter(_.parentCell
+        .coordinates
+        .zip(bcMaxRequiredCellCoordinatePerDimension.value)
+        .exists { case (cellCoordinate, maxRequiredCoordinate) =>
+          cellCoordinate <= maxRequiredCoordinate
+        })
   }
 
-  private def getTopK(
-      candidatePointScores: Dataset[PointScore]
-  ): Seq[PointScore] = {
+  private def getTopK(candidatePointScores: Dataset[PointScore]): Seq[PointScore] = {
     import spark.implicits._
     val bcK = spark.sparkContext.broadcast(k)
     val topK = candidatePointScores
@@ -98,13 +86,11 @@ class TopkPointFetcher(k: Int, dimensions: Int)(implicit spark: SparkSession) {
 object TopkPointFetcher {
 
   def getDominatingCandidatesFromPartiallyDominatingCells(
-      point: Point,
-      candidates: Seq[Point]
+    point: Point,
+    candidates: Seq[Point]
   ): Seq[Point] = candidates.flatMap { candidatePoint =>
-    if (
-      candidatePoint.parentCell.partiallyDominates(point.parentCell)
-      && candidatePoint.dominates(point)
-    ) Some(candidatePoint)
+    if (candidatePoint.parentCell.partiallyDominates(point.parentCell)
+      && candidatePoint.dominates(point)) Some(candidatePoint)
     else None
   }
 }

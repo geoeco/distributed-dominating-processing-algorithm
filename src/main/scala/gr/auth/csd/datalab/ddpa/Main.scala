@@ -11,7 +11,7 @@ object Main {
   def main(args: Array[String]): Unit = {
     CommandLineConfig.parse(args) match {
       case Some(commandLineConfig) => run(commandLineConfig)
-      case None                    => // arguments are bad, error message will be displayed
+      case None => // arguments are bad, error message will be displayed
     }
   }
 

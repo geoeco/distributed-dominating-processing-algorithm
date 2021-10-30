@@ -1,11 +1,11 @@
 package gr.auth.csd.datalab.ddpa.config
 
 final case class QueryConfig(
-    k: Int,
-    dimensions: Int,
-    cellsPerDimension: Int,
-    cellWidth: Double,
-    minAllowedCoordinateValue: Double
+  k: Int,
+  dimensions: Int,
+  cellsPerDimension: Int,
+  cellWidth: Double,
+  minAllowedCoordinateValue: Double
 )
 
 object QueryConfig {

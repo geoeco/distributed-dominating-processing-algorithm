@@ -7,7 +7,8 @@ trait SharedSparkSession extends BeforeAndAfterAll {
   self: Suite =>
 
   lazy val spark: SparkSession =
-    SparkSession.builder
+    SparkSession
+      .builder
       .master("local[*]")
       .config("spark.ui.enabled", "false")
       .getOrCreate()

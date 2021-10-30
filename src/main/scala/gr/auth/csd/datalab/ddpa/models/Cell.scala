@@ -27,13 +27,10 @@ object Cell {
   def apply(cellId: Long, dimensions: Int, cellsPerDimension: Int): Cell = {
     val cellCoordinates =
       (0 until dimensions)
-        .foldRight((cellId, List[Int]())) {
-          case (dimension, (previousRemainder, acc)) =>
-            val divisor = Math.pow(cellsPerDimension, dimension)
-            (
-              (previousRemainder % divisor).toInt,
-              (previousRemainder / divisor).toInt :: acc
-            )
+        .foldRight((cellId, List[Int]())) { case (dimension, (previousRemainder, acc)) =>
+          val divisor = Math.pow(cellsPerDimension, dimension)
+          ((previousRemainder % divisor).toInt,
+            (previousRemainder / divisor).toInt :: acc)
         }
         ._2
         .reverse
