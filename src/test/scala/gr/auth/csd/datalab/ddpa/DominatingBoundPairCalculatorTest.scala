@@ -10,8 +10,9 @@ class DominatingBoundPairCalculatorTest extends FunSuite with Matchers {
 
   private val dominatingBoundPairCalculator = new DominatingBoundPairCalculator(cellsPerDimension)
 
-  test("it should calculate the dominating bound pair of a cell in the " +
-    "middle of the grid") {
+  test(
+    "it should calculate the dominating bound pair of a cell in the " +
+      "middle of the grid") {
     val cell = Seq(1, 1, 1).toCell
     val pointCount = 7
     val neighboringCellDominatingBounds = Map(
@@ -31,8 +32,9 @@ class DominatingBoundPairCalculatorTest extends FunSuite with Matchers {
     actual shouldBe expected
   }
 
-  test("it should calculate the dominating bound pair of a cell in the " +
-    "edge of the grid for all dimensions") {
+  test(
+    "it should calculate the dominating bound pair of a cell in the " +
+      "edge of the grid for all dimensions") {
     val cell = Seq(2, 2, 2).toCell
     val pointCount = 10
     val neighboringCellDominatingBounds = Map.empty[Cell, BoundPair]
@@ -44,8 +46,9 @@ class DominatingBoundPairCalculatorTest extends FunSuite with Matchers {
     actual shouldBe expected
   }
 
-  test("it should calculate the dominating bound pair of a cell in the " +
-    "edge of the grid for one dimension") {
+  test(
+    "it should calculate the dominating bound pair of a cell in the " +
+      "edge of the grid for one dimension") {
     val cell = Seq(2, 2, 1).toCell
     val pointCount = 9
     val neighboringCellDominatingBounds = Map(Seq(2, 2, 2).toCell -> BoundPair(0, 10))
