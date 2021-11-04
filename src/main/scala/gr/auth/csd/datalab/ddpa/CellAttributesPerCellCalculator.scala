@@ -18,7 +18,8 @@ class CellAttributesPerCellCalculator(dimensions: Int, cellsPerDimension: Int) {
         pointCount,
         dominatingBoundPair.lower,
         dominatingBoundPair.upper,
-        dominatedBoundPair.lower)
+        dominatedBoundPair.lower
+      )
     }
   }
 

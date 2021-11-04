@@ -30,7 +30,9 @@ class CandidatePointFetcher(k: Int)(implicit spark: SparkSession) {
           point,
           bcK.value,
           candidateCells.value(point.parentCell).lowerDominated,
-          bcPointsInCandidateCells.value))
+          bcPointsInCandidateCells.value
+        )
+      )
       .collect()
       .toList
 

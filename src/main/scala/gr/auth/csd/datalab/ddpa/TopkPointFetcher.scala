@@ -66,7 +66,8 @@ class TopkPointFetcher(k: Int, dimensions: Int)(implicit spark: SparkSession) {
           .zip(bcMaxRequiredCellCoordinatePerDimension.value)
           .exists { case (cellCoordinate, maxRequiredCoordinate) =>
             cellCoordinate <= maxRequiredCoordinate
-          })
+          }
+      )
   }
 
   private def getTopK(candidatePointScores: Dataset[PointScore]): Seq[PointScore] = {
