@@ -18,23 +18,26 @@ object CommandLineConfig {
   def parse(args: Array[String]): Option[CommandLineConfig] = {
     val parser = new scopt.OptionParser[CommandLineConfig]("DDPA") {
       opt[Int]('k', "k").required
-        .validate(x =>
+        .validate { x =>
           if (x > 0) success
-          else failure("k must be higher than zero"))
+          else failure("k must be higher than zero")
+        }
         .action((x, c) => c.copy(k = x))
         .text("number of results of the top-k dominating query")
 
       opt[Int]('d', "dimensions").required
-        .validate(x =>
+        .validate { x =>
           if (x > 0) success
-          else failure("dimensions must be higher than zero"))
+          else failure("dimensions must be higher than zero")
+        }
         .action((x, c) => c.copy(dimensions = x))
         .text("number of dimensions")
 
       opt[Int]('m', "cellsPerDimension").required
-        .validate(x =>
+        .validate { x =>
           if (x > 0) success
-          else failure("number of cells must be higher than zero"))
+          else failure("number of cells must be higher than zero")
+        }
         .action((x, c) => c.copy(cellsPerDimension = x))
         .text("number of grid cells per dimension")
 

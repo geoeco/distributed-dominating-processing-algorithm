@@ -19,8 +19,7 @@ class CandidateCellFetcher(k: Int) {
         .map { case (_, cellAttributes) =>
           (cellAttributes.lowerDominatingBound, cellAttributes.pointCount)
         }
-        .to[mutable.PriorityQueue]
-    )
+        .to[mutable.PriorityQueue])
 
     intermediateCandidateCells.collect {
       case (cell, cellAttributes) if cellAttributes.upperDominatingBound >= kthPointLowerBoundScore =>
@@ -40,7 +39,6 @@ class CandidateCellFetcher(k: Int) {
       getKthPointLowerBoundScore(
         remainingCells,
         lowerDominatingBound,
-        pointAccumulator + pointCount
-      )
+        pointAccumulator + pointCount)
     }
 }

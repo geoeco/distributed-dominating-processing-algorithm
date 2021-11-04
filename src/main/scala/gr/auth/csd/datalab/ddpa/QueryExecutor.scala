@@ -55,6 +55,5 @@ object QueryExecutor {
       new CandidateCellFetcher(queryConfig.k),
       new CandidatePointFetcher(queryConfig.k),
       new TopkPointFetcher(queryConfig.k, queryConfig.dimensions),
-      queryConfig
-    )
+      queryConfig)
 }

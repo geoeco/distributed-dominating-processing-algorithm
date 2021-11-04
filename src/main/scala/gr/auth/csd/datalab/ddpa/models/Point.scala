@@ -7,12 +7,12 @@ final case class Point(coordinates: Seq[Double], parentCell: Cell) {
   def dominates(that: Point): Boolean = {
     val coordinatePairs = this.coordinates.zip(that.coordinates)
 
-    val dominatesAtLeastOneDimension = coordinatePairs.exists { case (thisCoordinate, thatCoordinate) =>
-      thisCoordinate < thatCoordinate
+    val dominatesAtLeastOneDimension = coordinatePairs.exists {
+      case (thisCoordinate, thatCoordinate) => thisCoordinate < thatCoordinate
     }
 
-    val notDominatedInAnyDimension = !coordinatePairs.exists { case (thisCoordinate, thatCoordinate) =>
-      thisCoordinate > thatCoordinate
+    val notDominatedInAnyDimension = !coordinatePairs.exists {
+      case (thisCoordinate, thatCoordinate) => thisCoordinate > thatCoordinate
     }
 
     dominatesAtLeastOneDimension && notDominatedInAnyDimension

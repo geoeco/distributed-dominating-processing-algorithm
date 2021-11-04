@@ -16,6 +16,5 @@ object QueryConfig {
       dimensions = commandLineConfig.dimensions,
       cellsPerDimension = commandLineConfig.cellsPerDimension,
       cellWidth = commandLineConfig.getCellWidth,
-      minAllowedCoordinateValue = commandLineConfig.minAllowedCoordinateValue
-    )
+      minAllowedCoordinateValue = commandLineConfig.minAllowedCoordinateValue)
 }
