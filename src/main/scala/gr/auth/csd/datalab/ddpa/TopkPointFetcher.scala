@@ -35,9 +35,9 @@ class TopkPointFetcher(k: Int, dimensions: Int)(implicit spark: SparkSession) {
     topkDominatingPoints
   }
 
-  /** Trims the original dataset of all the points that are not required for the
-    * calculation of the candidate point scores, as they are already included in
-    * the lower dominating bound of ALL the candidates' parent cells.
+  /** Trims the original dataset of all the points that are not required for the calculation of the
+    * candidate point scores, as they are already included in the lower dominating bound of ALL the
+    * candidates' parent cells.
     */
   private def trimInputDataset(
     inputDataset: Dataset[Point],

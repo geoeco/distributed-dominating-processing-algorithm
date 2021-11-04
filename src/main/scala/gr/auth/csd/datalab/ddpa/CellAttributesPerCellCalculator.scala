@@ -22,7 +22,9 @@ class CellAttributesPerCellCalculator(dimensions: Int, cellsPerDimension: Int) {
     }
   }
 
-  private def getDominatingBoundsPerCell(pointCountsPerCell: Map[Cell, Long]): Map[Cell, BoundPair] =
+  private def getDominatingBoundsPerCell(
+    pointCountsPerCell: Map[Cell, Long]
+  ): Map[Cell, BoundPair] =
     cellIdRange.foldRight(Map[Cell, BoundPair]()) { (cellId, acc) =>
       val cell = Cell(cellId, dimensions, cellsPerDimension)
       val pointCount = pointCountsPerCell.getOrElse(cell, 0L)
@@ -30,7 +32,9 @@ class CellAttributesPerCellCalculator(dimensions: Int, cellsPerDimension: Int) {
       acc.updated(cell, dominatingBoundPair)
     }
 
-  private def getDominatedBoundsPerCell(pointCountsPerCell: Map[Cell, Long]): Map[Cell, BoundPair] = {
+  private def getDominatedBoundsPerCell(
+    pointCountsPerCell: Map[Cell, Long]
+  ): Map[Cell, BoundPair] = {
     val mirroredPointCounts = pointCountsPerCell.map { case (cell, pointCount) =>
       cell.mirrorCoordinates(cellsPerDimension) -> pointCount
     }

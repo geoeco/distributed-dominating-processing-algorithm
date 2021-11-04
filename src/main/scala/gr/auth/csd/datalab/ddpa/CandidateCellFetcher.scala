@@ -22,8 +22,11 @@ class CandidateCellFetcher(k: Int) {
         .to[mutable.PriorityQueue])
 
     intermediateCandidateCells.collect {
-      case (cell, cellAttributes) if cellAttributes.upperDominatingBound >= kthPointLowerBoundScore =>
-        cell -> CellLowerBounds(cellAttributes.lowerDominatingBound, cellAttributes.lowerDominatedBound)
+      case (cell, cellAttributes)
+        if cellAttributes.upperDominatingBound >= kthPointLowerBoundScore =>
+        cell -> CellLowerBounds(
+          cellAttributes.lowerDominatingBound,
+          cellAttributes.lowerDominatedBound)
     }
   }
 

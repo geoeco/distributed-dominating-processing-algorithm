@@ -21,7 +21,8 @@ class DominatingBoundPairCalculatorSpec extends WordSpec with Matchers {
         Seq(2, 1, 1).toCell -> BoundPair(0, 38),
         Seq(2, 1, 2).toCell -> BoundPair(0, 18),
         Seq(2, 2, 1).toCell -> BoundPair(0, 19),
-        Seq(2, 2, 2).toCell -> BoundPair(0, 10))
+        Seq(2, 2, 2).toCell -> BoundPair(0, 10)
+      )
 
       val actual =
         dominatingBoundPairCalculator.calculate(cell, pointCount, neighboringCellDominatingBounds)
