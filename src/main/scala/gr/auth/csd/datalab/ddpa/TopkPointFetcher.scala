@@ -47,7 +47,9 @@ class TopkPointFetcher(k: Int, dimensions: Int)(implicit spark: SparkSession) {
     val maxRequiredCellCoordinatePerDimension =
       candidates
         .foldLeft(Seq.fill(dimensions)(0)) { (acc, candidate) =>
-          candidate.parentCell.coordinates
+          candidate
+            .parentCell
+            .coordinates
             .zip(acc)
             .map { case (cellCoordinate, currentMaxRequiredCoordinate) =>
               Math.max(cellCoordinate, currentMaxRequiredCoordinate)
@@ -59,7 +61,8 @@ class TopkPointFetcher(k: Int, dimensions: Int)(implicit spark: SparkSession) {
 
     inputDataset
       .filter(
-        _.parentCell.coordinates
+        _.parentCell
+          .coordinates
           .zip(bcMaxRequiredCellCoordinatePerDimension.value)
           .exists { case (cellCoordinate, maxRequiredCoordinate) =>
             cellCoordinate <= maxRequiredCoordinate

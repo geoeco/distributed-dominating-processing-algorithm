@@ -35,7 +35,9 @@ class DominatingBoundPairCalculator(cellsPerDimension: Int) {
   ): Long = {
 
     val dimensionsToCheck =
-      cell.coordinates.zipWithIndex
+      cell
+        .coordinates
+        .zipWithIndex
         .collect {
           case (coordinate, dimension) if !(coordinate == cellsPerDimension - 1) => dimension
         }
@@ -66,12 +68,16 @@ class DominatingBoundPairCalculator(cellsPerDimension: Int) {
       .combinations(n)
       .toList
       .foldLeft(0: Long) { (acc, combination) =>
-        val neighborCell = cell.coordinates.zipWithIndex.map { case (coordinate, index) =>
-          if (combination.contains(index))
-            coordinate + 1
-          else
-            coordinate
-        }.toCell
+        val neighborCell = cell
+          .coordinates
+          .zipWithIndex
+          .map { case (coordinate, index) =>
+            if (combination.contains(index))
+              coordinate + 1
+            else
+              coordinate
+          }
+          .toCell
 
         acc + neighboringCellBounds(neighborCell).upper
       }
