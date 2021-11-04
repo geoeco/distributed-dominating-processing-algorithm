@@ -9,8 +9,8 @@ class CandidateCellFetcher(k: Int) {
 
   def fetch(cellAttributesPerCell: Map[Cell, CellAttributes]): Map[Cell, CellLowerBounds] = {
 
-    val intermediateCandidateCells = cellAttributesPerCell.filter {
-      case (_, cellAttributes) => cellAttributes.lowerDominatedBound < k
+    val intermediateCandidateCells = cellAttributesPerCell.filter { case (_, cellAttributes) =>
+      cellAttributes.lowerDominatedBound < k
     }
 
     // TODO: Make this cleaner.
@@ -23,8 +23,11 @@ class CandidateCellFetcher(k: Int) {
     )
 
     intermediateCandidateCells.collect {
-      case (cell, cellAttributes) if cellAttributes.upperDominatingBound >= kthPointLowerBoundScore =>
-        cell -> CellLowerBounds(cellAttributes.lowerDominatingBound, cellAttributes.lowerDominatedBound)
+      case (cell, cellAttributes)
+        if cellAttributes.upperDominatingBound >= kthPointLowerBoundScore =>
+        cell -> CellLowerBounds(
+          cellAttributes.lowerDominatingBound,
+          cellAttributes.lowerDominatedBound)
     }
   }
 

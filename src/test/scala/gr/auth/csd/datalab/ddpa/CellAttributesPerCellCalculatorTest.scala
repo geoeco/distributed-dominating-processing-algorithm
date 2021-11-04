@@ -11,8 +11,9 @@ class CellAttributesPerCellCalculatorTest extends FunSuite with Matchers {
   private val cellAttributesPerCellCalculator =
     new CellAttributesPerCellCalculator(dimensions, cellsPerDimension)
 
-  test("it should calculate the cell attributes for all cells containing " +
-    "points") {
+  test(
+    "it should calculate the cell attributes for all cells containing " +
+      "points") {
     val pointCountsPerCell: Map[Cell, Long] = Map(
       Seq(0, 1).toCell -> 10,
       Seq(0, 2).toCell -> 10,
