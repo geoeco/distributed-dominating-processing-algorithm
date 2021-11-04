@@ -17,21 +17,24 @@ object CommandLineConfig {
 
   def parse(args: Array[String]): Option[CommandLineConfig] = {
     val parser = new scopt.OptionParser[CommandLineConfig]("DDPA") {
-      opt[Int]('k', "k").required
+      opt[Int]('k', "k")
+        .required
         .validate(x =>
           if (x > 0) success
           else failure("k must be higher than zero"))
         .action((x, c) => c.copy(k = x))
         .text("number of results of the top-k dominating query")
 
-      opt[Int]('d', "dimensions").required
+      opt[Int]('d', "dimensions")
+        .required
         .validate(x =>
           if (x > 0) success
           else failure("dimensions must be higher than zero"))
         .action((x, c) => c.copy(dimensions = x))
         .text("number of dimensions")
 
-      opt[Int]('m', "cellsPerDimension").required
+      opt[Int]('m', "cellsPerDimension")
+        .required
         .validate(x =>
           if (x > 0) success
           else failure("number of cells must be higher than zero"))
@@ -46,11 +49,13 @@ object CommandLineConfig {
         .action((x, c) => c.copy(maxAllowedCoordinateValue = x))
         .text("maximum allowed value for a coordinate (exclusive)")
 
-      opt[String]('i', "inputPath").required
+      opt[String]('i', "inputPath")
+        .required
         .action((x, c) => c.copy(inputPath = x))
         .text("path to input file(s)")
 
-      opt[String]('o', "outputDir").required
+      opt[String]('o', "outputDir")
+        .required
         .action((x, c) => c.copy(outputDir = x))
         .text("path to output directory (must exist)")
 

@@ -32,7 +32,8 @@ class QueryExecutor(
     val bcMinAllowedCoordinateValue =
       spark.sparkContext.broadcast(queryConfig.minAllowedCoordinateValue)
 
-    spark.read
+    spark
+      .read
       .textFile(inputPath)
       .map(Point(_, bcCellWidth.value, bcMinAllowedCoordinateValue.value))
   }

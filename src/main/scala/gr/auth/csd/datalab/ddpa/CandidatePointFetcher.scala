@@ -53,9 +53,7 @@ object CandidatePointFetcher {
 
     val dominatedCount =
       otherPoints.foldLeft(initialDominatedCount) { (currentDominatedCount, otherPoint) =>
-        if (
-          otherPoint.parentCell.partiallyDominates(point.parentCell) && otherPoint.dominates(point)
-        )
+        if (otherPoint.parentCell.partiallyDominates(point.parentCell) && otherPoint.dominates(point))
           currentDominatedCount + 1L
         else
           currentDominatedCount

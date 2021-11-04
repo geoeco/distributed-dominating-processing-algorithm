@@ -25,8 +25,9 @@ class DominatingBoundPairCalculator(cellsPerDimension: Int) {
     BoundPair(lowerDominatingBound, upperDominatingBound)
   }
 
-  /** Calculates the upper dominating bound of the pivot cell by applying the inclusion-exclusion
-    * principle.
+  /**
+    * Calculates the upper dominating bound of the pivot cell by applying the
+    * inclusion-exclusion principle.
     */
   private def getUpperDominatingBound(
     cell: Cell,
@@ -35,7 +36,8 @@ class DominatingBoundPairCalculator(cellsPerDimension: Int) {
   ): Long = {
 
     val dimensionsToCheck =
-      cell.coordinates.zipWithIndex
+      cell.coordinates
+        .zipWithIndex
         .collect {
           case (coordinate, dimension) if !(coordinate == cellsPerDimension - 1) => dimension
         }
@@ -52,8 +54,10 @@ class DominatingBoundPairCalculator(cellsPerDimension: Int) {
       } + pointCount
   }
 
-  /** Calculates the sum of the cardinalities of the n-tuple-wise intersections. (e.g. If n = 2,
-    * cardinalities of intersections consisting of 2 sets each are summed.)
+  /**
+    * Calculates the sum of the cardinalities of the n-tuple-wise intersections.
+    * (e.g. If n = 2, cardinalities of intersections consisting of 2 sets each
+    * are summed.)
     */
   private def getIntersectionCardinalitySum(
     n: Int,
@@ -66,12 +70,15 @@ class DominatingBoundPairCalculator(cellsPerDimension: Int) {
       .combinations(n)
       .toList
       .foldLeft(0: Long) { (acc, combination) =>
-        val neighborCell = cell.coordinates.zipWithIndex.map { case (coordinate, index) =>
-          if (combination.contains(index))
-            coordinate + 1
-          else
-            coordinate
-        }.toCell
+        val neighborCell = cell.coordinates
+          .zipWithIndex
+          .map { case (coordinate, index) =>
+            if (combination.contains(index))
+              coordinate + 1
+            else
+              coordinate
+          }
+          .toCell
 
         acc + neighboringCellBounds(neighborCell).upper
       }
