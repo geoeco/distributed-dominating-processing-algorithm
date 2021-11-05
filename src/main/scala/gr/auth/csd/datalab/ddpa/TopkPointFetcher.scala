@@ -35,10 +35,9 @@ class TopkPointFetcher(k: Int, dimensions: Int)(implicit spark: SparkSession) {
     topkDominatingPoints
   }
 
-  /**
-    * Trims the original dataset of all the points that are not required for
-    * the calculation of the candidate point scores, as they are already
-    * included in the lower dominating bound of ALL the candidates' parent cells.
+  /** Trims the original dataset of all the points that are not required for the calculation of the
+    * candidate point scores, as they are already included in the lower dominating bound of ALL the
+    * candidates' parent cells.
     */
   private def trimInputDataset(
     inputDataset: Dataset[Point],
@@ -61,12 +60,14 @@ class TopkPointFetcher(k: Int, dimensions: Int)(implicit spark: SparkSession) {
       spark.sparkContext.broadcast(maxRequiredCellCoordinatePerDimension)
 
     inputDataset
-      .filter(_.parentCell
-        .coordinates
-        .zip(bcMaxRequiredCellCoordinatePerDimension.value)
-        .exists { case (cellCoordinate, maxRequiredCoordinate) =>
-          cellCoordinate <= maxRequiredCoordinate
-        })
+      .filter(
+        _.parentCell
+          .coordinates
+          .zip(bcMaxRequiredCellCoordinatePerDimension.value)
+          .exists { case (cellCoordinate, maxRequiredCoordinate) =>
+            cellCoordinate <= maxRequiredCoordinate
+          }
+      )
   }
 
   private def getTopK(candidatePointScores: Dataset[PointScore]): Seq[PointScore] = {
@@ -89,7 +90,9 @@ object TopkPointFetcher {
     point: Point,
     candidates: Seq[Point]
   ): Seq[Point] = candidates.collect {
-    case candidatePoint if (candidatePoint.parentCell.partiallyDominates(point.parentCell)
-      && candidatePoint.dominates(point)) => candidatePoint
+    case candidatePoint
+      if (candidatePoint.parentCell.partiallyDominates(point.parentCell)
+        && candidatePoint.dominates(point)) =>
+      candidatePoint
   }
 }

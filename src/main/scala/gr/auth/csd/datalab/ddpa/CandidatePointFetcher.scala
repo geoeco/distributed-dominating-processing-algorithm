@@ -30,7 +30,9 @@ class CandidatePointFetcher(k: Int)(implicit spark: SparkSession) {
           point,
           bcK.value,
           candidateCells.value(point.parentCell).lowerDominated,
-          bcPointsInCandidateCells.value))
+          bcPointsInCandidateCells.value
+        )
+      )
       .collect()
       .toList
 
@@ -53,7 +55,9 @@ object CandidatePointFetcher {
 
     val dominatedCount =
       otherPoints.foldLeft(initialDominatedCount) { (currentDominatedCount, otherPoint) =>
-        if (otherPoint.parentCell.partiallyDominates(point.parentCell) && otherPoint.dominates(point))
+        if (
+          otherPoint.parentCell.partiallyDominates(point.parentCell) && otherPoint.dominates(point)
+        )
           currentDominatedCount + 1L
         else
           currentDominatedCount
