@@ -23,9 +23,10 @@ class TopkPointFetcher(k: Int, dimensions: Int)(implicit spark: SparkSession) {
         .flatMap(getDominatingCandidatesFromPartiallyDominatingCells(_, bcCandidatePoints.value))
         .groupByKey(candidate => candidate)
         .count()
-        .map { case (candidate, partialScore) =>
-          val score = partialScore + candidateCells.value(candidate.parentCell).lowerDominating
-          PointScore(candidate.coordinates, score)
+        .map {
+          case (candidate, partialScore) =>
+            val score = partialScore + candidateCells.value(candidate.parentCell).lowerDominating
+            PointScore(candidate.coordinates, score)
         }
 
     val topkDominatingPoints = getTopK(candidatePointScores)
@@ -51,8 +52,9 @@ class TopkPointFetcher(k: Int, dimensions: Int)(implicit spark: SparkSession) {
             .parentCell
             .coordinates
             .zip(acc)
-            .map { case (cellCoordinate, currentMaxRequiredCoordinate) =>
-              Math.max(cellCoordinate, currentMaxRequiredCoordinate)
+            .map {
+              case (cellCoordinate, currentMaxRequiredCoordinate) =>
+                Math.max(cellCoordinate, currentMaxRequiredCoordinate)
             }
         }
 
@@ -64,8 +66,9 @@ class TopkPointFetcher(k: Int, dimensions: Int)(implicit spark: SparkSession) {
         _.parentCell
           .coordinates
           .zip(bcMaxRequiredCellCoordinatePerDimension.value)
-          .exists { case (cellCoordinate, maxRequiredCoordinate) =>
-            cellCoordinate <= maxRequiredCoordinate
+          .exists {
+            case (cellCoordinate, maxRequiredCoordinate) =>
+              cellCoordinate <= maxRequiredCoordinate
           }
       )
   }

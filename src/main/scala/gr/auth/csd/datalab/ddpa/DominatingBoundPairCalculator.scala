@@ -71,11 +71,12 @@ class DominatingBoundPairCalculator(cellsPerDimension: Int) {
         val neighborCell = cell
           .coordinates
           .zipWithIndex
-          .map { case (coordinate, index) =>
-            if (combination.contains(index))
-              coordinate + 1
-            else
-              coordinate
+          .map {
+            case (coordinate, index) =>
+              if (combination.contains(index))
+                coordinate + 1
+              else
+                coordinate
           }
           .toCell
 

@@ -2,15 +2,16 @@ package gr.auth.csd.datalab.ddpa
 
 import gr.auth.csd.datalab.ddpa.implicits.CellConverter
 import gr.auth.csd.datalab.ddpa.models.{CellAttributes, CellLowerBounds}
-import org.scalatest.{Matchers, WordSpec}
+import org.scalatest.matchers.must.Matchers
+import org.scalatest.wordspec.AnyWordSpec
 
-class CandidateCellFetcherSpec extends WordSpec with Matchers {
+class CandidateCellFetcherSpec extends AnyWordSpec with Matchers {
 
   import CandidateCellFetcherSpec._
 
   private val candidateCellFetcher = new CandidateCellFetcher(k)
 
-  "CandidateCellFetcher" should {
+  "CandidateCellFetcher" must {
     "return the candidate cells with their lower bounds" in {
       val cellAttributesPerCell = Map(
         Seq(0, 1).toCell -> CellAttributes(10, 60, 120, 0),
@@ -39,7 +40,7 @@ class CandidateCellFetcherSpec extends WordSpec with Matchers {
         Seq(2, 0).toCell -> CellLowerBounds(30, 0)
       )
 
-      actual shouldBe expected
+      actual mustBe expected
     }
   }
 }

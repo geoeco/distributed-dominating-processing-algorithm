@@ -3,15 +3,16 @@ package gr.auth.csd.datalab.ddpa
 import gr.auth.csd.datalab.ddpa.config.QueryConfig
 import gr.auth.csd.datalab.ddpa.models.PointScore
 import gr.auth.csd.datalab.ddpa.spark.SharedSparkSession
-import org.scalatest.{Matchers, WordSpec}
+import org.scalatest.matchers.must.Matchers
+import org.scalatest.wordspec.AnyWordSpec
 
-class QueryExecutorSpec extends WordSpec with Matchers with SharedSparkSession {
+class QueryExecutorSpec extends AnyWordSpec with Matchers with SharedSparkSession {
 
   import QueryExecutorSpec._
 
   private val queryExecutor = QueryExecutor(queryConfig)(spark)
 
-  "QueryExecutor" should {
+  "QueryExecutor" must {
     "return the k points with the highest score" in {
       val inputPath = getClass.getResource("/input.txt").getPath
 
@@ -29,7 +30,7 @@ class QueryExecutorSpec extends WordSpec with Matchers with SharedSparkSession {
         PointScore(Seq(0.1420590296524259, 0.24467124493142756, 0.07746961763021076), 492)
       )
 
-      actual shouldBe expected
+      actual mustBe expected
     }
   }
 }

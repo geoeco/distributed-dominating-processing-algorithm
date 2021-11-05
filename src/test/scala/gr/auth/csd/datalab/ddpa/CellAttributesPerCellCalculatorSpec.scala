@@ -2,16 +2,17 @@ package gr.auth.csd.datalab.ddpa
 
 import gr.auth.csd.datalab.ddpa.implicits.CellConverter
 import gr.auth.csd.datalab.ddpa.models.{Cell, CellAttributes}
-import org.scalatest.{Matchers, WordSpec}
+import org.scalatest.matchers.must.Matchers
+import org.scalatest.wordspec.AnyWordSpec
 
-class CellAttributesPerCellCalculatorSpec extends WordSpec with Matchers {
+class CellAttributesPerCellCalculatorSpec extends AnyWordSpec with Matchers {
 
   import CellAttributesPerCellCalculatorSpec._
 
   private val cellAttributesPerCellCalculator =
     new CellAttributesPerCellCalculator(dimensions, cellsPerDimension)
 
-  "CellAttributesPerCellCalculator" should {
+  "CellAttributesPerCellCalculator" must {
     "calculate the cell attributes for all cells containing points" in {
       val pointCountsPerCell: Map[Cell, Long] = Map(
         Seq(0, 1).toCell -> 10,
@@ -50,7 +51,7 @@ class CellAttributesPerCellCalculatorSpec extends WordSpec with Matchers {
         Seq(3, 3).toCell -> CellAttributes(10, 0, 10, 80)
       )
 
-      actual shouldBe expected
+      actual mustBe expected
     }
   }
 }

@@ -11,15 +11,16 @@ class CellAttributesPerCellCalculator(dimensions: Int, cellsPerDimension: Int) {
     val dominatingBoundsPerCell = getDominatingBoundsPerCell(pointCountsPerCell)
     val dominatedBoundsPerCell = getDominatedBoundsPerCell(pointCountsPerCell)
 
-    pointCountsPerCell.map { case (cell, pointCount) =>
-      val dominatingBoundPair = dominatingBoundsPerCell(cell)
-      val dominatedBoundPair = dominatedBoundsPerCell(cell)
-      cell -> CellAttributes(
-        pointCount,
-        dominatingBoundPair.lower,
-        dominatingBoundPair.upper,
-        dominatedBoundPair.lower
-      )
+    pointCountsPerCell.map {
+      case (cell, pointCount) =>
+        val dominatingBoundPair = dominatingBoundsPerCell(cell)
+        val dominatedBoundPair = dominatedBoundsPerCell(cell)
+        cell -> CellAttributes(
+          pointCount,
+          dominatingBoundPair.lower,
+          dominatingBoundPair.upper,
+          dominatedBoundPair.lower
+        )
     }
   }
 
@@ -36,12 +37,12 @@ class CellAttributesPerCellCalculator(dimensions: Int, cellsPerDimension: Int) {
   private def getDominatedBoundsPerCell(
     pointCountsPerCell: Map[Cell, Long]
   ): Map[Cell, BoundPair] = {
-    val mirroredPointCounts = pointCountsPerCell.map { case (cell, pointCount) =>
-      cell.mirrorCoordinates(cellsPerDimension) -> pointCount
+    val mirroredPointCounts = pointCountsPerCell.map {
+      case (cell, pointCount) => cell.mirrorCoordinates(cellsPerDimension) -> pointCount
     }
 
-    getDominatingBoundsPerCell(mirroredPointCounts).map { case (cell, boundPair) =>
-      cell.mirrorCoordinates(cellsPerDimension) -> boundPair
+    getDominatingBoundsPerCell(mirroredPointCounts).map {
+      case (cell, boundPair) => cell.mirrorCoordinates(cellsPerDimension) -> boundPair
     }
   }
 }
