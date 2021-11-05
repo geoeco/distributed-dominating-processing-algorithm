@@ -15,7 +15,9 @@ lazy val root = (project in file("."))
       scalaTest % Test
     ),
     parallelExecution in Test := false,
-    assemblyOption in assembly := (assemblyOption in assembly).value.copy(includeScala = false),
+    assemblyOption in assembly := (assemblyOption in assembly)
+      .value
+      .copy(includeScala = false),
     run in Compile := Defaults
       .runTask(
         fullClasspath in Compile,

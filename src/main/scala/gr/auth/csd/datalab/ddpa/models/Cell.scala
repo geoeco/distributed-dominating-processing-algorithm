@@ -5,13 +5,15 @@ final case class Cell(coordinates: Seq[Int]) {
   def partiallyDominates(that: Cell): Boolean = {
     val coordinatePairs = this.coordinates.zip(that.coordinates)
 
-    val dominates = !coordinatePairs.exists { case (thisCoordinate, thatCoordinate) =>
-      thisCoordinate > thatCoordinate
-    }
+    val dominates =
+      !coordinatePairs.exists { case (thisCoordinate, thatCoordinate) =>
+        thisCoordinate > thatCoordinate
+      }
 
-    val doesNotFullyDominate = coordinatePairs.exists { case (thisCoordinate, thatCoordinate) =>
-      thisCoordinate == thatCoordinate
-    }
+    val doesNotFullyDominate =
+      coordinatePairs.exists { case (thisCoordinate, thatCoordinate) =>
+        thisCoordinate == thatCoordinate
+      }
 
     dominates && doesNotFullyDominate
   }
