@@ -55,5 +55,5 @@ containing them.
 For development purposes it is convenient to be a able to run the code locally, without the need of a Spark cluster.
 You can do so with `sbt run`:
 ```
-sbt -Dspark.master=local[*] "run -k 50 -d 3 -m 8 -i /inputDir -o /outputDir"
+sbt "-Dspark.master=local[*]" "run -k 50 -d 3 -m 8 -i /inputDir -o /outputDir"
 ```

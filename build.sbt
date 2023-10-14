@@ -14,15 +14,15 @@ lazy val root = (project in file("."))
       scalaLogging,
       scalaTest % Test
     ),
-    parallelExecution in Test := false,
-    assemblyOption in assembly := (assemblyOption in assembly)
+    Test / parallelExecution := false,
+    assembly / assemblyOption := (assembly / assemblyOption)
       .value
       .copy(includeScala = false),
-    run in Compile := Defaults
+    Compile / run := Defaults
       .runTask(
-        fullClasspath in Compile,
-        mainClass in (Compile, run),
-        runner in (Compile, run)
+        Compile / fullClasspath,
+        Compile / run / mainClass,
+        Compile / run / runner
       )
       .evaluated
   )
